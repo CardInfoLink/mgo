@@ -35,7 +35,7 @@ import (
 	"sync"
 	"time"
 
-	"gopkg.in/mgo.v2/bson"
+	"github.com/CardInfoLink/mgo/bson"
 )
 
 // ---------------------------------------------------------------------------
@@ -646,6 +646,10 @@ func (cluster *mongoCluster) AcquireSocket(mode Mode, slaveOk bool, syncTimeout 
 				cluster.syncServers()
 				time.Sleep(100 * time.Millisecond)
 				continue
+			} else {
+				server.Lock()
+				server.abended = false
+				server.Unlock()
 			}
 		}
 		return s, nil
